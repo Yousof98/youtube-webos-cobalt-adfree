@@ -1,4 +1,4 @@
-const CONFIG_KEY = 'ytaf-configuration-cobalt-adfree-v2';
+const CONFIG_KEY = 'ytaf-configuration-cobalt-adfree-arabic-v2';
 const defaultConfig = {
   enableAdBlock: true,
   startupPage: 'home',
