@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -18,6 +19,7 @@
 #include "starboard/shared/starboard/link_receiver.h"
 #include "starboard/webos/arm/application_sdl.h"
 #include "starboard/webos/arm/launch_parameters.h"
+#include "starboard/webos/arm/webos_app_id.h"
 
 namespace {
 
@@ -59,19 +61,23 @@ extern "C" SB_EXPORT_PLATFORM int main(int argc, char** argv) {
   // raw ALSA device.
   setenv("PULSE_SERVER", "unix:/var/run/pulse/native", 1);
 
+  const std::string& app_id = starboard::shared::webos::WebosAppId();
+  starboard::shared::webos::IsolateWebosStorageEnvironment(app_id);
+
   // Keep Cobalt diagnostics bounded. /tmp is memory-backed on webOS, so an
   // unbounded append-only log can otherwise consume the complete tmpfs during
   // a long-running session. Once the log reaches 16 MiB, retain the newest
   // 8 MiB and continue appending.
   constexpr off_t kMaxLogBytes = 16 * 1024 * 1024;
   constexpr off_t kRetainedLogBytes = 8 * 1024 * 1024;
-  const char* log_path = "/tmp/cobalt-starterless.log";
+  const std::string log_path =
+      starboard::shared::webos::WebosStarterlessLogPath(app_id);
 
   auto trim_log = [log_path, kMaxLogBytes, kRetainedLogBytes](off_t size) {
     if (size < kMaxLogBytes) return;
 
     const off_t source_start = size - kRetainedLogBytes;
-    int fd = open(log_path, O_RDWR);
+    int fd = open(log_path.c_str(), O_RDWR);
     if (fd < 0) return;
 
     char buffer[64 * 1024];
@@ -105,12 +111,12 @@ extern "C" SB_EXPORT_PLATFORM int main(int argc, char** argv) {
   };
 
   struct stat log_stat;
-  if (stat(log_path, &log_stat) == 0) {
+  if (stat(log_path.c_str(), &log_stat) == 0) {
     trim_log(log_stat.st_size);
   }
 
-  FILE* stdout_log = std::freopen(log_path, "a", stdout);
-  FILE* stderr_log = std::freopen(log_path, "a", stderr);
+  FILE* stdout_log = std::freopen(log_path.c_str(), "a", stdout);
+  FILE* stderr_log = std::freopen(log_path.c_str(), "a", stderr);
   if (stdout_log) {
     std::setvbuf(stdout_log, nullptr, _IOLBF, 0);
   }
@@ -125,7 +131,7 @@ extern "C" SB_EXPORT_PLATFORM int main(int argc, char** argv) {
     while (true) {
       sleep(1);
       struct stat current_stat;
-      if (stat(log_path, &current_stat) != 0 ||
+      if (stat(log_path.c_str(), &current_stat) != 0 ||
           current_stat.st_size < kMaxLogBytes) {
         continue;
       }
@@ -135,7 +141,7 @@ extern "C" SB_EXPORT_PLATFORM int main(int argc, char** argv) {
       std::fflush(stdout);
       std::fflush(stderr);
 
-      if (stat(log_path, &current_stat) == 0) {
+      if (stat(log_path.c_str(), &current_stat) == 0) {
         trim_log(current_stat.st_size);
       }
 

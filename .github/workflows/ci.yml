@@ -150,13 +150,18 @@ jobs:
           python3 scripts/verify-ipk-container.py --help
           python3 scripts/test-ipk-tools.py
 
-      - name: Run SDL wheel input regression test
+      - name: Run SDL wheel and webOS app ID regression tests
         run: |
           g++ -std=c++17 -Wall -Wextra -Werror \
             -I cobalt-platform/webos/arm \
             scripts/test-sdl-wheel-input.cc \
             -o /tmp/test-sdl-wheel-input
           /tmp/test-sdl-wheel-input
+          g++ -std=c++14 -Wall -Wextra -Werror \
+            -I cobalt-platform/webos/arm \
+            scripts/test-webos-app-id.cc \
+            -o /tmp/test-webos-app-id
+          /tmp/test-webos-app-id
 
       - name: Build injected web app
         working-directory: webapp

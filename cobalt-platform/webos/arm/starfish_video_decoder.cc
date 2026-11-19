@@ -12,6 +12,7 @@
 #include "starboard/common/string.h"
 #include "starboard/shared/starboard/media/mime_type.h"
 #include "starboard/webos/arm/application_sdl.h"
+#include "starboard/webos/arm/webos_app_id.h"
 
 namespace starboard {
 namespace shared {
@@ -274,10 +275,7 @@ void StarfishVideoDecoder::InitializePipeline(
   }
 
   const char* codec_name = CodecName(codec_);
-  const char* app_id = std::getenv("APPID");
-  if (!app_id || !*app_id) {
-    app_id = "youtube.leanback.v4";
-  }
+  const std::string& app_id = starboard::shared::webos::WebosAppId();
   const std::string& window_id = ApplicationSdl::Get()->GetExportedWindowId();
   if (window_id.empty() && !ApplicationSdl::Get()->UsesAcbVideo()) {
     ReportError("SDL did not create a webOS exported video window.");
@@ -312,7 +310,7 @@ void StarfishVideoDecoder::InitializePipeline(
       "\"adaptiveResolution\":true,\"maxWidth\":%d,"
       "\"maxHeight\":%d,\"maxFrameRate\":%d},"
       "\"forcedPrerollOnPause\":true,\"seekMode\":\"keep-rate\"}}]}",
-      window_field.c_str(), app_id, codec_name, target_pts_ns, width, height,
+      window_field.c_str(), app_id.c_str(), codec_name, target_pts_ns, width, height,
       capabilities.width, capabilities.height, capabilities.frame_rate);
 
   SB_LOG(INFO) << "Loading Starfish hardware decoder for " << codec_name

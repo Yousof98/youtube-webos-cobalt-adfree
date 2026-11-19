@@ -19,14 +19,14 @@ AAC_ASSETS = (
 
 
 class AacPackageTests(unittest.TestCase):
-    def package(self, root, bundled=True, missing=None):
+    def package(self, root, bundled=True, missing=None, extra_binary_text=''):
         build, runtime, commands, assets = (root / name for name in (
             'build', 'runtime', 'bin', 'assets'))
         for path in (build / 'content', runtime, commands, assets):
             path.mkdir(parents=True)
         binary = build / 'cobalt'
         binary.write_text('/web/adblock/adblockPreload.js\0' + (
-            '$ORIGIN/lib/libfdk-aac.so' if bundled else ''))
+            '$ORIGIN/lib/libfdk-aac.so' if bundled else '') + extra_binary_text)
         binary.chmod(0o755)
         for name in AAC_ASSETS:
             if bundled and name != missing:
@@ -86,6 +86,22 @@ class AacPackageTests(unittest.TestCase):
             self.assertEqual(result.returncode, 91, result.stdout + result.stderr)
             self.assertEqual(json.loads(report.read_text()), {
                 name: None for name in AAC_ASSETS})
+
+    def test_rejects_stale_binary_with_hardcoded_stock_appid(self):
+        app_id = json.loads(
+            (ROOT / 'starterless-cobalt/appinfo.json').read_text(encoding='utf-8')
+        )['id']
+        if app_id == 'youtube.leanback.v4':
+            self.skipTest('Guard applies only when package_id differs from stock')
+        with tempfile.TemporaryDirectory() as temporary:
+            result, report = self.package(
+                Path(temporary),
+                bundled=False,
+                extra_binary_text='\0"appId":"youtube.leanback.v4"\0',
+            )
+            self.assertEqual(result.returncode, 5, result.stdout + result.stderr)
+            self.assertIn('hardcodes appId youtube.leanback.v4', result.stderr)
+            self.assertFalse(report.exists())
 
     def test_compile_copies_aac_only_after_success(self):
         script = (ROOT / 'scripts/build-starterless-cobalt-docker.sh').read_text()

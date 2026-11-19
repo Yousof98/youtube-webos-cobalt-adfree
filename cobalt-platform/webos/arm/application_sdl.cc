@@ -20,6 +20,7 @@
 #include "starboard/shared/starboard/audio_sink/audio_sink_internal.h"
 #include "starboard/webos/arm/sdl_wheel_input.h"
 #include "starboard/webos/arm/launch_parameters.h"
+#include "starboard/webos/arm/webos_app_id.h"
 #include "starboard/webos/arm/window_internal.h"
 
 namespace starboard {
@@ -178,8 +179,7 @@ void AcbCallback(long acb_id,
 }
 
 const char* AppId() {
-  const char* app_id = std::getenv("APPID");
-  return app_id && *app_id ? app_id : "youtube.leanback.v4";
+  return starboard::shared::webos::WebosAppId().c_str();
 }
 
 }  // namespace

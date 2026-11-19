@@ -47,6 +47,12 @@ if ! grep -aFq '/web/adblock/adblockPreload.js' "$build_dir/cobalt"; then
   echo "Run scripts/build-starterless-cobalt-docker.sh first." >&2
   exit 5
 fi
+if [[ "$package_id" != "youtube.leanback.v4" ]] && \
+   grep -aFq '"appId":"youtube.leanback.v4"' "$build_dir/cobalt"; then
+  echo "Starterless Cobalt binary hardcodes appId youtube.leanback.v4 while packaging $package_id." >&2
+  echo "Rebuild Cobalt from source before packaging to avoid a playback black screen." >&2
+  exit 5
+fi
 
 for asset in adblockMain.js adblockMain.css adblockPreload.js; do
   if [[ ! -s "$webapp_output/$asset" ]]; then
@@ -131,6 +137,7 @@ if [[ "$bundled_aac" == 1 ]]; then
 fi
 cp "$repo_root/assets/icon.png" "$package_root/icon.png"
 cp "$repo_root/assets/largeIcon.png" "$package_root/largeIcon.png"
+cp "$repo_root/assets/splashBackground.png" "$package_root/splashBackground.png"
 chmod +x "$package_root/cobalt"
 
 # Final guard on the exact package tree, not only the source/output directories.

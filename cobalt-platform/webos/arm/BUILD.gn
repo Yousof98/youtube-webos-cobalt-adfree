@@ -22,6 +22,7 @@ static_library("starboard_platform") {
     "starfish_video_configuration.h",
     "starfish_video_decoder.cc",
     "starfish_video_decoder.h",
+    "webos_app_id.h",
     "window_create.cc",
     "window_destroy.cc",
     "window_get_platform_handle.cc",

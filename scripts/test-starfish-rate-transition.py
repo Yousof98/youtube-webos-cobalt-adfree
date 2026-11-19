@@ -41,6 +41,7 @@ fixture = r'''
 #include "starfish_rate_replay.h"
 #include "starfish_rate_transition.h"
 #include "starfish_video_configuration.h"
+#include "webos_app_id.h"
 using namespace starboard::shared::webos;
 using SbTime = int64_t;
 constexpr SbTime kSecond = 1000000;
