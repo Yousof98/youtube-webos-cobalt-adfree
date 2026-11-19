@@ -1,5 +1,6 @@
 import './returnyoutubedislike.css';
 import { configRead } from './config';
+import { text as languageText } from './languages/index.js';
 
 const RYD_API = 'https://returnyoutubedislikeapi.com/votes';
 
@@ -454,7 +455,7 @@ class ReturnYouTubeDislike {
         const labelElement = document.createElement(sourceLabel?.tagName || 'div');
         labelElement.className = sourceLabel?.className || classNameFromSelector(mode.labelSelector);
         labelElement.setAttribute('data-ytaf-ryd-description-label', 'true');
-        labelElement.textContent = 'Dislikes';
+        labelElement.textContent = languageText('ui', 'dislikeLabel');
 
         dislikeElement.appendChild(valueElement);
         dislikeElement.appendChild(labelElement);
@@ -512,10 +513,11 @@ class ReturnYouTubeDislike {
         if (valueElement && valueElement.textContent !== dislikeText) {
             valueElement.textContent = dislikeText;
         }
-        if (labelElement && labelElement.textContent !== 'Dislikes') {
-            labelElement.textContent = 'Dislikes';
+        const dislikeLabelText = languageText('ui', 'dislikeLabel');
+        if (labelElement && labelElement.textContent !== dislikeLabelText) {
+            labelElement.textContent = dislikeLabelText;
         }
-        dislikeElement.setAttribute('aria-label', `${dislikeText} Dislikes`);
+        dislikeElement.setAttribute('aria-label', `${dislikeText} ${dislikeLabelText}`);
         this.descriptionStatus = 'updated';
     }
 

@@ -1,0 +1,43 @@
+export default {
+  ui: {
+    title: 'يوتيوب بدون إعلانات',
+    adblock: 'منع الإعلانات',
+    sponsoredQrCodeBlock: 'إخفاء نوافذ الباركود الترويجية',
+    startupPage: 'صفحة البداية',
+    startupPageHome: 'الرئيسية',
+    startupPageSubscriptions: 'الاشتراكات',
+    startupPageShorts: 'المقاطع القصيرة',
+    startupPageLibrary: 'المكتبة',
+    autoLogin: 'تخطي اختيار الحساب تلقائياً',
+    sponsorblock: 'تخطي المقاطع الترويجية تلقائياً',
+    ryd: 'إظهار عدد عدم الإعجاب',
+    shorts: 'إخفاء المقاطع القصيرة',
+    sponsor: 'تخطي إعلانات الرعاة',
+    intro: 'تخطي المقدمة',
+    outro: 'تخطي النهاية',
+    interaction: 'تخطي تذكير الاشتراك والإعجاب',
+    selfpromo: 'تخطي الترويج الشخصي',
+    musicOfftopic: 'تخطي الموسيقى والمقاطع الجانبية',
+    preview: 'تخطي المعاينة والملخص',
+    filler: 'تخطي الحشو والكلام الزائد',
+    hook: 'تخطي التمهيد والترحيب',
+    subtitleOn: 'الترجمة: مفعّلة',
+    subtitleOff: 'الترجمة: متوقفة',
+    subtitleUnavailable: 'الترجمة غير متوفرة',
+    playbackSpeed: 'سرعة التشغيل: {rate}×',
+    dislikeLabel: 'عدم إعجاب',
+    openHint: 'اضغط الزر [الأخضر] لفتح قائمة الإضافات'
+  },
+  sponsorBlock: {
+    sponsor: 'إعلان الراعي',
+    intro: 'المقدمة',
+    outro: 'النهاية',
+    interaction: 'تذكير التفاعل',
+    selfpromo: 'الترويج الشخصي',
+    music_offtopic: 'مقطع جانبي',
+    preview: 'المعاينة',
+    filler: 'حشو',
+    hook: 'التمهيد',
+    skipping: 'تم تخطي'
+  }
+};

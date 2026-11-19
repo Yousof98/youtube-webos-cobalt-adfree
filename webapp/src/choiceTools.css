@@ -36,3 +36,21 @@
   border-radius: 5px;
   font-size: 0.78rem;
 }
+
+.ytaf-rtl .choice-wrapper {
+  direction: rtl;
+  text-align: right;
+  gap: 0;
+}
+
+.ytaf-rtl .choice-wrapper.ytaf-focused {
+  transform: translateX(-2px);
+}
+
+.ytaf-rtl .choice-wrapper .desc {
+  text-align: right;
+}
+
+.ytaf-rtl .choice-wrapper .choice-value {
+  margin-right: 12px;
+}

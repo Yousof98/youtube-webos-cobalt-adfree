@@ -62,6 +62,25 @@
   border-left: 2px solid rgba(68, 204, 102, 0.58);
 }
 
+.ytaf-ui-container.ytaf-rtl {
+  left: auto;
+  right: 6vw;
+  direction: rtl;
+  text-align: right;
+}
+
+.ytaf-ui-container.ytaf-rtl div.center,
+.ytaf-ui-container.ytaf-rtl div.center h1 {
+  text-align: right;
+  font-weight: 600;
+}
+
+.ytaf-ui-container.ytaf-rtl div.blockquote {
+  padding: 8px 18px 0 0;
+  border-left: 0;
+  border-right: 2px solid rgba(68, 204, 102, 0.58);
+}
+
 @keyframes ytaf-menu-in {
   from {
     opacity: 0;
@@ -107,6 +126,30 @@
 
 .ytaf-notification-container .message-yellow {
   border-left-color: rgba(255, 226, 69, 0.92);
+}
+
+.ytaf-notification-container.ytaf-rtl {
+  left: 34px;
+  right: auto;
+  direction: rtl;
+  text-align: left;
+}
+
+.ytaf-notification-container.ytaf-rtl .message {
+  direction: rtl;
+  text-align: right;
+  border-left: 1px solid rgba(255, 255, 255, 0.16);
+  border-right: 3px solid rgba(255, 226, 69, 0.92);
+}
+
+.ytaf-notification-container.ytaf-rtl .message-green {
+  border-left-color: rgba(255, 255, 255, 0.16);
+  border-right-color: rgba(58, 230, 118, 0.96);
+}
+
+.ytaf-notification-container.ytaf-rtl .message-yellow {
+  border-left-color: rgba(255, 255, 255, 0.16);
+  border-right-color: rgba(255, 226, 69, 0.92);
 }
 
 .ytaf-notification-container .message-hidden {

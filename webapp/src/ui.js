@@ -8,7 +8,10 @@ import './ui.css';
 import { configRead, configWrite } from './config.js';
 import { checkboxTools } from './checkboxTools.js';
 import { choiceTools } from './choiceTools.js';
-import { text as languageText } from './languages/index.js';
+import {
+  isRtlLanguage,
+  text as languageText
+} from './languages/index.js';
 import { sponsorBlockCategoryColors } from './sponsorblock-categories.js';
 import {
   isSubtitleShortcut,
@@ -30,6 +33,7 @@ export function userScriptStartUI() {
 
   const ARROW_KEY_CODE = { 37: 'left', 38: 'up', 39: 'right', 40: 'down' };
   const PLAYBACK_RATES = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+  const rtl = isRtlLanguage();
   let lastGreenKeyAt = 0;
   let currentFocusIndex = -1;
   let menuScrollFrame = null;
@@ -107,7 +111,11 @@ export function userScriptStartUI() {
     if (nextRate === currentRate) return true;
 
     video.playbackRate = nextRate;
-    showNotification(`Playback speed: ${nextRate}x`, 1800, 'green');
+    showNotification(
+      text('playbackSpeed').replace('{rate}', String(nextRate)),
+      1800,
+      'green'
+    );
     return true;
   }
 
@@ -211,6 +219,10 @@ export function userScriptStartUI() {
 
   const uiContainer = document.createElement('div');
   uiContainer.classList.add('ytaf-ui-container');
+  if (rtl) {
+    uiContainer.classList.add('ytaf-rtl');
+    uiContainer.setAttribute('dir', 'rtl');
+  }
   uiContainer.style.display = 'none';
   uiContainer.style.visibility = 'hidden';
   uiContainer.setAttribute('tabindex', 0);
@@ -449,10 +461,12 @@ export function userScriptStartUI() {
       display: 'block',
       visibility: 'visible',
       opacity: '1',
-      left: '64px',
+      left: rtl ? 'auto' : '64px',
       top: '64px',
-      right: 'auto',
+      right: rtl ? '64px' : 'auto',
       bottom: 'auto',
+      direction: rtl ? 'rtl' : 'ltr',
+      textAlign: rtl ? 'right' : 'left',
       width: '720px',
       maxWidth: '80vw',
       height: '80vh',
@@ -777,22 +791,25 @@ export function userScriptStartUI() {
 
 export function showNotification(text, time = 3000, variant = 'yellow') {
   console.info('Show notification: ' + text);
-  if (!document.querySelector('.ytaf-notification-container')) {
+  const rtl = isRtlLanguage();
+  let notificationContainer = document.querySelector('.ytaf-notification-container');
+  if (!notificationContainer) {
     console.info('Adding notification container');
-    const c = document.createElement('div');
-    c.classList.add('ytaf-notification-container');
-    document.body.appendChild(c);
+    notificationContainer = document.createElement('div');
+    notificationContainer.classList.add('ytaf-notification-container');
+    document.body.appendChild(notificationContainer);
   }
+  notificationContainer.classList.toggle('ytaf-rtl', rtl);
+  notificationContainer.setAttribute('dir', rtl ? 'rtl' : 'ltr');
 
   const elm = document.createElement('div');
   const elmInner = document.createElement('div');
   elmInner.textContent = text;
+  elmInner.setAttribute('dir', rtl ? 'rtl' : 'ltr');
   elmInner.classList.add('message');
   elmInner.classList.add(`message-${variant}`);
   elmInner.classList.add('message-hidden');
   elm.appendChild(elmInner);
-  const notificationContainer = document.querySelector('.ytaf-notification-container');
-  if (!notificationContainer) return;
   notificationContainer.appendChild(elm);
 
   setTimeout(() => {

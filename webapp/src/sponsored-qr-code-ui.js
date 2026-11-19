@@ -1,22 +1,6 @@
 import { checkboxTools } from './checkboxTools.js';
 import { configRead, configWrite } from './config.js';
-import { getLanguage } from './languages/index.js';
-
-const SPONSORED_QR_LABELS = {
-  de: 'Gesponserte QR-Code-Popups blockieren',
-  en: 'Block sponsored QR code popups',
-  es: 'Bloquear ventanas emergentes de códigos QR patrocinados',
-  fr: 'Bloquer les fenêtres QR sponsorisées',
-  it: 'Blocca popup con codici QR sponsorizzati',
-  nl: 'Gesponsorde QR-codepop-ups blokkeren',
-  pl: 'Blokuj sponsorowane wyskakujące kody QR',
-  pt: 'Bloquear pop-ups de códigos QR patrocinados'
-};
-
-function getLabel() {
-  const language = getLanguage();
-  return SPONSORED_QR_LABELS[language] || SPONSORED_QR_LABELS.en;
-}
+import { text as languageText } from './languages/index.js';
 
 export function userScriptStartSponsoredQrCodeUI() {
   const uiContainer = document.querySelector('.ytaf-ui-container');
@@ -28,7 +12,7 @@ export function userScriptStartSponsoredQrCodeUI() {
     uiContainer.querySelector('.ytaf-ui-content') || uiContainer;
   const control = checkboxTools.add(
     '__sponsored_qr_code_block',
-    getLabel(),
+    languageText('ui', 'sponsoredQrCodeBlock'),
     configRead('enableSponsoredQrCodeBlock'),
     (newState) => configWrite('enableSponsoredQrCodeBlock', newState)
   );

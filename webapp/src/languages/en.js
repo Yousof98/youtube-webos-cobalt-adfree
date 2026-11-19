@@ -2,6 +2,7 @@ export default {
   ui: {
     title: 'YouTube webOS Cobalt AdFree',
     adblock: 'Enable AdBlocking',
+    sponsoredQrCodeBlock: 'Block sponsored QR code popups',
     startupPage: 'Startup page',
     startupPageHome: 'Home',
     startupPageSubscriptions: 'Subscriptions',
@@ -23,6 +24,8 @@ export default {
     subtitleOn: 'Subtitles: ON',
     subtitleOff: 'Subtitles: OFF',
     subtitleUnavailable: 'Subtitles unavailable',
+    playbackSpeed: 'Playback speed: {rate}x',
+    dislikeLabel: 'Dislikes',
     openHint: 'Press [GREEN] for YouTube extras'
   },
   sponsorBlock: {
