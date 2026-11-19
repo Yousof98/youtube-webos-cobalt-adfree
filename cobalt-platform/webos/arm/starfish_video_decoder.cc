@@ -275,7 +275,7 @@ void StarfishVideoDecoder::InitializePipeline(
   }
 
   const char* codec_name = CodecName(codec_);
-  const std::string& app_id = starboard::shared::webos::WebosAppId();
+  const std::string& app_id = ::starboard::shared::webos::WebosAppId();
   const std::string& window_id = ApplicationSdl::Get()->GetExportedWindowId();
   if (window_id.empty() && !ApplicationSdl::Get()->UsesAcbVideo()) {
     ReportError("SDL did not create a webOS exported video window.");

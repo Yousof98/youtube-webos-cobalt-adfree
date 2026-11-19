@@ -32,10 +32,10 @@ test('all native Starfish and Acb payloads share WebosAppId() without hardcoded 
   assert.equal(avComp.includes('"appId":"youtube.leanback.v4"'), false);
   assert.equal(avComp.includes('\\"appId\\":\\"youtube.leanback.v4\\"'), false);
   assert.match(avComp, /\\"appId\\":\\"%s\\"/);
-  assert.match(avComp, /WebosAppId\(\)/);
+  assert.match(avComp, /::starboard::shared::webos::WebosAppId\(\)/);
   assert.match(decoder, /\\"appId\\":\\"%s\\"/);
-  assert.match(decoder, /WebosAppId\(\)/);
-  assert.match(appSdl, /WebosAppId\(\)/);
+  assert.match(decoder, /::starboard::shared::webos::WebosAppId\(\)/);
+  assert.match(appSdl, /::starboard::shared::webos::WebosAppId\(\)/);
 });
 
 function extractArMember(arBytes, targetName) {

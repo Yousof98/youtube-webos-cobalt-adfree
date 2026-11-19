@@ -179,7 +179,7 @@ void AcbCallback(long acb_id,
 }
 
 const char* AppId() {
-  return starboard::shared::webos::WebosAppId().c_str();
+  return ::starboard::shared::webos::WebosAppId().c_str();
 }
 
 }  // namespace
